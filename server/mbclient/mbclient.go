@@ -14,21 +14,17 @@ type MBClient struct {
 	UserAgent  string
 }
 
+func (c *MBClient) CreateQuery() *url.Values {
+	u := &url.URL{}
+	q := u.Query()
+	return &q
+}
+
 // NewRequest constructs a request to be sent to the Musicbrainz API
-func (c *MBClient) NewRequest(entity, query string) (*http.Request, error) {
+func (c *MBClient) NewRequest(entity string, q *url.Values) (*http.Request, error) {
 	rel := &url.URL{Path: entity}
 	u := c.BaseURL.ResolveReference(rel)
-	q := u.Query()
-	q.Set("query", query)
 	u.RawQuery = q.Encode()
-	// var buf io.ReadWriter
-	// if body != nil {
-	// 	buf = new(bytes.Buffer)
-	// 	err := json.NewEncoder(buf).Encode(body)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-	// }
 	fmt.Println(u.String())
 	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
 	if err != nil {

@@ -24,7 +24,9 @@ type artist struct {
 // GetArtistMetadata does a search for artists by a string query, returns a response encoded as an ArtistMetadata struct
 func (c *MBClient) GetArtistMetadata(artistQuery string) (*ArtistMetadata, error) {
 	metadata := &ArtistMetadata{}
-	req, err := c.NewRequest(ArtistEntity, artistQuery)
+	q := c.CreateQuery()
+	q.Set("query", artistQuery)
+	req, err := c.NewRequest(ArtistEntity, q)
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +40,9 @@ func (c *MBClient) GetArtistMetadata(artistQuery string) (*ArtistMetadata, error
 // GetFirstArtistID returns the first artist match's Musicbrainz ID value
 func (c *MBClient) GetFirstArtistID(artistQuery string) (string, error) {
 	metadata := &ArtistMetadata{}
-	req, err := c.NewRequest(ArtistEntity, artistQuery)
+	q := c.CreateQuery()
+	q.Set("query", artistQuery)
+	req, err := c.NewRequest(ArtistEntity, q)
 	if err != nil {
 		return "", err
 	}

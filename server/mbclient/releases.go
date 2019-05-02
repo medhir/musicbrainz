@@ -35,9 +35,10 @@ type nameCredit struct {
 }
 
 func (c *MBClient) GetReleasesByArtist(id string) (*ReleaseMetadata, error) {
-	idQuery := "arid:" + id
 	metadata := &ReleaseMetadata{}
-	req, err := c.NewRequest(ReleaseEntity, idQuery)
+	q := c.CreateQuery()
+	q.Set("artist", id)
+	req, err := c.NewRequest(ReleaseEntity, q)
 	if err != nil {
 		return nil, err
 	}
@@ -49,10 +50,12 @@ func (c *MBClient) GetReleasesByArtist(id string) (*ReleaseMetadata, error) {
 }
 
 func (c *MBClient) GetReleasesByArtistAndTitle(id, title string) (*ReleaseMetadata, error) {
-	idQuery := "arid" + id
+	idQuery := "arid:" + id
 	finalQuery := title + " AND " + idQuery
+	q := c.CreateQuery()
+	q.Set("query", finalQuery)
 	metadata := &ReleaseMetadata{}
-	req, err := c.NewRequest(ReleaseEntity, finalQuery)
+	req, err := c.NewRequest(ReleaseEntity, q)
 	if err != nil {
 		return nil, err
 	}

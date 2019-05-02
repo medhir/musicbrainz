@@ -24,7 +24,7 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	releases, err := client.GetReleasesByArtist(id)
+	releases, err := client.GetReleasesByArtistAndTitle(id, "more")
 	if err != nil {
 		fmt.Println(err)
 	}
