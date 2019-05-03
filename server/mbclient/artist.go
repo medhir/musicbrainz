@@ -5,20 +5,20 @@ import "encoding/xml"
 const ArtistEntity = "artist"
 
 type ArtistMetadata struct {
-	XMLName    xml.Name   `xml:"metadata"`
+	XMLName    xml.Name   `xml:"metadata" json:"-"`
 	ArtistList artistList `xml:"artist-list"`
 }
 
 type artistList struct {
-	XMLName xml.Name `xml:"artist-list"`
-	Count   string   `xml:"count,attr"`
-	Artists []artist `xml:"artist"`
+	XMLName xml.Name `xml:"artist-list" json:"-"`
+	Count   string   `xml:"count,attr" json:"count"`
+	Artists []artist `xml:"artist" json:"artists"`
 }
 
 type artist struct {
 	XMLName xml.Name `xml:"artist"`
-	ID      string   `xml:"id,attr"`
-	Name    string   `xml:"name"`
+	ID      string   `xml:"id,attr" json:"id"`
+	Name    string   `xml:"name" json:"name"`
 }
 
 // GetArtistMetadata does a search for artists by a string query, returns a response encoded as an ArtistMetadata struct

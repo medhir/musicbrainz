@@ -2,7 +2,6 @@ package mbclient
 
 import (
 	"encoding/xml"
-	"fmt"
 	"net/http"
 	"net/url"
 )
@@ -25,7 +24,6 @@ func (c *MBClient) NewRequest(entity string, q *url.Values) (*http.Request, erro
 	rel := &url.URL{Path: entity}
 	u := c.BaseURL.ResolveReference(rel)
 	u.RawQuery = q.Encode()
-	fmt.Println(u.String())
 	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
 	if err != nil {
 		return nil, err

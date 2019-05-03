@@ -6,10 +6,15 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/medhir/musicbrainz/server"
+
 	"github.com/medhir/musicbrainz/server/mbclient"
 )
 
+// BaseURL is the API Endpoint for the Musicbrainz client
 const BaseURL = "https://musicbrainz.org/ws/2/"
+
+// UserAgent provides a description of the application to be sent with Musicbrainz API requests
 const UserAgent = "Medhir's Musicbrainz Client App / v0.1 / Contact: mail AT medhir.com"
 
 func main() {
@@ -20,17 +25,12 @@ func main() {
 		BaseURL:    parsedURL,
 		UserAgent:  UserAgent,
 		HTTPClient: httpClient}
-	id, err := client.GetFirstArtistID("Drake")
+	mux := http.NewServeMux()
+	server := server.NewServer(mux, client)
+	fmt.Println("Listening on port 8080...")
+	err := http.ListenAndServe(":8080", server.Router)
 	if err != nil {
-		fmt.Println(err)
-	}
-	releases, err := client.GetReleasesByArtistAndTitle(id, "more")
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Println("Drake Titles")
-	for _, release := range releases.ReleaseList.Releases {
-		fmt.Println("-> " + release.Title)
+		fmt.Println(err.Error())
+		return
 	}
 }
