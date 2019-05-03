@@ -2,8 +2,27 @@ package server
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 )
+
+func (s *server) handleIndex() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		index, err := ioutil.ReadFile("client/dist/index.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		w.Write(index)
+	}
+}
+
+func (s *server) handleStaticAssets() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fs := http.FileServer(http.Dir("client/dist"))
+		handler := http.StripPrefix("/dist/", fs)
+		handler.ServeHTTP(w, r)
+	}
+}
 
 func (s *server) handleSearch() http.HandlerFunc {
 	type searchRequestBody struct {
