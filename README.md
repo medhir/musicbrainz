@@ -2,7 +2,7 @@
 MusicBrainz client interface for nTopology
 
 ## Running the Application
-You must have an installation of Node, NPM, and Go in order to run the application. Once you have these dependencies installed, run the following command within the applications directory:
+You must have an installation of Node, NPM, and Go in order to run the application. Once you have these dependencies installed, run the following command within the application's directory:
 ```sh
 make app
 ```
