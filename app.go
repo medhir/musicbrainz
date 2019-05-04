@@ -26,6 +26,11 @@ func main() {
 		UserAgent:  UserAgent,
 		HTTPClient: httpClient}
 	mux := http.NewServeMux()
+	// c := cors.New(cors.Options{
+	// 	Debug:            true,
+	// 	AllowCredentials: true,
+	// 	AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
+	// 	AllowedHeaders:   []string{"Authorization", "Content-Type"}})
 	server := server.NewServer(mux, client)
 	fmt.Println("Listening on port 8080...")
 	err := http.ListenAndServe(":8080", server.Router)
