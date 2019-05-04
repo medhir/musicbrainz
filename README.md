@@ -7,3 +7,5 @@ You must have an installation of Node, NPM, and Go in order to run the applicati
 make app
 ```
 This command will install all the NPM dependencies for the client, build the client, and run the Go application.
+
+Point your browser to `http://localhost:8080` to view the application. 
