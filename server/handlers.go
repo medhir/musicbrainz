@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"path"
 )
 
 func (s *server) handleIndex() http.HandlerFunc {
@@ -59,6 +60,13 @@ func (s *server) handleSearch() http.HandlerFunc {
 
 func (s *server) handleGetAlbumInfo() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		id := path.Base(r.URL.Path)
+		release, err := s.MBClient.GetReleaseInfo(id)
+		if err != nil {
+			http.Error(w, "Could not get release information => "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(release)
 	}
 }

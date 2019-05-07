@@ -2,7 +2,9 @@ package mbclient
 
 import (
 	"encoding/xml"
+	"fmt"
 	"net/http"
+	"net/http/httputil"
 	"net/url"
 )
 
@@ -39,6 +41,8 @@ func (c *MBClient) Do(req *http.Request, v interface{}) (*http.Response, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	reqDump, _ := httputil.DumpRequest(req, true)
+	fmt.Println(string(reqDump))
 	err = xml.NewDecoder(resp.Body).Decode(v)
 	return resp, err
 }

@@ -4,7 +4,7 @@ import "encoding/xml"
 
 const ReleaseEntity = "release"
 
-type ReleaseMetadata struct {
+type ReleasesMetadata struct {
 	XMLName     xml.Name    `xml:"metadata" json:"-"`
 	ReleaseList releaseList `xml:"release-list"`
 }
@@ -34,35 +34,37 @@ type nameCredit struct {
 	Artist  artist   `xml:"artist" json:"artist"`
 }
 
-func (c *MBClient) GetReleasesByArtist(id string, typeFilters []string) (*ReleaseMetadata, error) {
-	metadata := &ReleaseMetadata{}
-	q := c.CreateQuery()
-	q.Set("artist", id)
-	if len(typeFilters) > 0 {
-		types := c.getTypeString(typeFilters)
-		q.Set("type", types)
-	}
-	req, err := c.NewRequest(ReleaseEntity, q)
-	if err != nil {
-		return nil, err
-	}
-	_, err = c.Do(req, metadata)
-	if err != nil {
-		return nil, err
-	}
-	return metadata, nil
+func (c *MBClient) GetReleasesByArtist(id string, typeFilters []string) (*ReleasesMetadata, error) {
+	finalQuery := c.createReleasesQuery(id, "", typeFilters)
+	metadata, err := c.executeReleasesQuery(finalQuery)
+	return metadata, err
 }
 
-func (c *MBClient) GetReleasesByArtistAndTitle(id, title string, typeFilters []string) (*ReleaseMetadata, error) {
+func (c *MBClient) GetReleasesByArtistAndTitle(id, title string, typeFilters []string) (*ReleasesMetadata, error) {
+	finalQuery := c.createReleasesQuery(id, title, typeFilters)
+	metadata, err := c.executeReleasesQuery(finalQuery)
+	return metadata, err
+}
+
+func (c *MBClient) createReleasesQuery(id, title string, typeFilters []string) string {
 	idQuery := "arid:" + id
-	finalQuery := title + " AND " + idQuery
+	var finalQuery string
+	if title == "" {
+		finalQuery = idQuery + " AND country:US"
+	} else {
+		finalQuery = title + " AND " + idQuery + " AND country:US"
+	}
 	if len(typeFilters) > 0 {
 		types := c.getTypeString(typeFilters)
 		finalQuery += " AND " + types
 	}
+	return finalQuery
+}
+
+func (c *MBClient) executeReleasesQuery(query string) (*ReleasesMetadata, error) {
 	q := c.CreateQuery()
-	q.Set("query", finalQuery)
-	metadata := &ReleaseMetadata{}
+	q.Set("query", query)
+	metadata := &ReleasesMetadata{}
 	req, err := c.NewRequest(ReleaseEntity, q)
 	if err != nil {
 		return nil, err

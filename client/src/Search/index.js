@@ -17,7 +17,7 @@ class Search extends Component {
     }
 
     doSearch () {
-        axios.post('/api/search', {
+        axios.post('http://localhost:8080/api/search', {
             artist: this.state.artist, 
             title: this.state.title, 
             filters: this.getFiltersArray()
