@@ -1,6 +1,6 @@
-# empty-project-babel-css-react
+# Musicbrainz React Client
 
-Empty project.
+Client interface for nTopology Musicbrainz API project
 
 ## Building and running on localhost
 
