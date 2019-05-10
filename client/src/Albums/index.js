@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 const getPagesArray = (total) => {
     const pagesArray = [];
-    let i = 1, remainingTotal = total;
+    let i = 0, remainingTotal = total;
     while (remainingTotal > 0) {
         pagesArray.push(i);
         remainingTotal -= 25;
@@ -26,7 +26,10 @@ class Albums extends Component {
                 <ul className="pages">
                     {
                         pages.map(page => {
-                            return <li data-page={ page } key={ page } onClick={ this.props.setPage }>{ page }</li>
+                            if (this.props.currentPage === page) {
+                                return <li className="current" data-page={ page } key={ page }>{ page+1 }</li>
+                            }
+                            return <li data-page={ page } key={ page } onClick={ this.props.setPage }>{ page+1 }</li>
                         })
                     }
                 </ul>

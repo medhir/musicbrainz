@@ -26,7 +26,8 @@ class Search extends Component {
         }).then(response => {
             this.setState({
                 totalCount: parseInt(response.data.ReleaseList.count),
-                albums: response.data.ReleaseList.releases
+                albums: response.data.ReleaseList.releases, 
+                currentPage: 0
             })
         })
     }
@@ -43,7 +44,8 @@ class Search extends Component {
                 offset: (pageNumber*25).toString()
             }).then(response => {
                 this.setState({
-                    albums: response.data.ReleaseList.releases
+                    albums: response.data.ReleaseList.releases,
+                    currentPage: pageNumber
                 })
             })
         })
@@ -142,7 +144,8 @@ class Search extends Component {
                         this.state.albums && <Albums 
                                                 albums={ this.state.albums } 
                                                 total={ this.state.totalCount } 
-                                                setPage={ this.setPage.bind(this) } 
+                                                setPage={ this.setPage.bind(this) }
+                                                currentPage={ this.state.currentPage } 
                                                 onClick={ this.showAlbumInfo.bind(this) }/> }
                     { this.state.album && <Album album={ this.state.album }/>}
                 </div>
