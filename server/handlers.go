@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"path"
+	"time"
 )
 
 func (s *server) handleIndex() http.HandlerFunc {
@@ -39,6 +40,7 @@ func (s *server) handleSearch() http.HandlerFunc {
 			http.Error(w, "Could not get first artist => "+err.Error(), http.StatusInternalServerError)
 			return
 		}
+		time.Sleep(time.Second)
 		w.Header().Set("Content-Type", "application/json")
 		if searchRequest.Title != "" {
 			response, err := s.MBClient.GetReleasesByArtistAndTitle(artist, searchRequest.Title, searchRequest.Filters)

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import axios from 'axios'
-import ResultsList from '../ResultsList'
+import Albums from '../Albums'
+import Album from '../Album'
 
 class Search extends Component {
     constructor (props) {
@@ -23,7 +24,7 @@ class Search extends Component {
             filters: this.getFiltersArray()
         }).then(response => {
             this.setState({
-                results: response.data.ReleaseList.releases
+                albums: response.data.ReleaseList.releases
             })
         })
     }
@@ -75,6 +76,21 @@ class Search extends Component {
         })
     }
 
+    showAlbumInfo (e) {
+        e.persist()
+        this.setState({
+            album: null
+        }, () => {
+            const releaseId = e.target.getAttribute('data-release-id')
+            axios.get(`http://localhost:8080/api/album/${ releaseId }`)
+            .then(response => {
+                this.setState({
+                    album: response.data
+                })
+            })
+        })
+    }
+
     render () {
         return (
             <Fragment>
@@ -101,7 +117,10 @@ class Search extends Component {
                     </label>
                     <button onClick={ this.doSearch.bind(this) }>Search</button>
                 </section>
-                { this.state.results && <ResultsList results={ this.state.results } /> }
+                <div className="results">
+                    { this.state.albums && <Albums albums={ this.state.albums } onClick={ this.showAlbumInfo.bind(this) }/> }
+                    { this.state.album && <Album album={ this.state.album }/>}
+                </div>
             </Fragment>
         )
     }

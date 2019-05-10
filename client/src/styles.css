@@ -1,0 +1,57 @@
+body {
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+header > h1 {
+    text-align: center;
+}
+
+.search {
+    width: 50%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px dashed black;
+    border-radius: 5px;
+}
+
+.albums > ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.albums > ul > li {
+    padding: 10px;
+    border-bottom: 1px solid black;
+    cursor: pointer;
+    transition: all 200ms ease-in;
+}
+
+.albums > ul > li:hover {
+    background-color: aquamarine;
+}
+
+.results {
+    width: 100%;
+    display: flex;
+}
+
+.albums, .album {
+    flex: 1;
+}
+
+.album {
+    display: flex;
+    padding: 30px;
+}
+
+.album > .cover {
+    width: 200px;
+}
+
+.album > .cover > img {
+    width: 100%;
+}
+
+.album > ul {
+    list-style-type: none;
+}
