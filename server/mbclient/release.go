@@ -44,11 +44,11 @@ type track struct {
 }
 
 type recording struct {
-	XMLName       xml.Name `xml:"recording" json:"-"`
-	ID            string   `xml:"id,attr"`
-	Title         string   `xml:"title"`
-	Length        string   `xml:"length"`
-	Dsambiguation string   `xml:"disambiguation"`
+	XMLName        xml.Name `xml:"recording" json:"-"`
+	ID             string   `xml:"id,attr"`
+	Title          string   `xml:"title"`
+	Length         string   `xml:"length"`
+	Disambiguation string   `xml:"disambiguation"`
 }
 
 // GetReleaseInfo gets the release's information for a release ID. This information includes track lists

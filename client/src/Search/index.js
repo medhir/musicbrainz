@@ -18,7 +18,7 @@ class Search extends Component {
     }
 
     doSearch () {
-        axios.post('http://localhost:8080/api/search', {
+        axios.post('/api/search', {
             artist: this.state.artist, 
             title: this.state.title, 
             filters: this.getFiltersArray()
@@ -82,7 +82,7 @@ class Search extends Component {
             album: null
         }, () => {
             const releaseId = e.target.getAttribute('data-release-id')
-            axios.get(`http://localhost:8080/api/album/${ releaseId }`)
+            axios.get(`/api/album/${ releaseId }`)
             .then(response => {
                 this.setState({
                     album: response.data
