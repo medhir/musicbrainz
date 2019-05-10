@@ -1,15 +1,34 @@
 import React, { Component } from 'react'
 
+const getPagesArray = (total) => {
+    const pagesArray = [];
+    let i = 1, remainingTotal = total;
+    while (remainingTotal > 0) {
+        pagesArray.push(i);
+        remainingTotal -= 25;
+        i++;
+    }
+    return pagesArray
+}
+
 class Albums extends Component {
     render () {
+        const pages = getPagesArray(this.props.total)
         return (
             <section className="albums">
-                <ul>
+                <ul className="entries">
                 {
                     this.props.albums.map(album => {
                         return <li key={ album.id } onClick={ this.props.onClick } data-release-id={ album.id }>{ album.title }</li>
                     })
                 }
+                </ul>
+                <ul className="pages">
+                    {
+                        pages.map(page => {
+                            return <li data-page={ page } key={ page } onClick={ this.props.setPage }>{ page }</li>
+                        })
+                    }
                 </ul>
             </section>
         )

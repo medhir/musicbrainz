@@ -31,6 +31,7 @@ func (s *server) handleSearch() http.HandlerFunc {
 		Artist  string   `json:"artist"`
 		Title   string   `json:"title"`
 		Filters []string `json:"filters"`
+		Offset  string   `json:"offset"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		searchRequest := &searchRequestBody{}
@@ -43,14 +44,14 @@ func (s *server) handleSearch() http.HandlerFunc {
 		time.Sleep(time.Second)
 		w.Header().Set("Content-Type", "application/json")
 		if searchRequest.Title != "" {
-			response, err := s.MBClient.GetReleasesByArtistAndTitle(artist, searchRequest.Title, searchRequest.Filters)
+			response, err := s.MBClient.GetReleasesByArtistAndTitle(artist, searchRequest.Title, searchRequest.Filters, searchRequest.Offset)
 			if err != nil {
 				http.Error(w, "Could not perform search query "+err.Error(), http.StatusInternalServerError)
 				return
 			}
 			json.NewEncoder(w).Encode(response)
 		} else {
-			response, err := s.MBClient.GetReleasesByArtist(artist, searchRequest.Filters)
+			response, err := s.MBClient.GetReleasesByArtist(artist, searchRequest.Filters, searchRequest.Offset)
 			if err != nil {
 				http.Error(w, "Could not perform search query "+err.Error(), http.StatusInternalServerError)
 				return

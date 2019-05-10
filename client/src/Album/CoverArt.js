@@ -24,11 +24,6 @@ class CoverArt extends Component {
     }
 
     render () {
-        // if (this.state.coverURL) {
-        //     return <img src={ this.state.coverURL } alt="Album Cover" />
-        // } else {
-        //     return <img src={ placeholderURL } alt="Album Cover Placeholder" />
-        // }
         return (
             <div className="cover">
             {

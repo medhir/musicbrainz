@@ -19,15 +19,27 @@ header > h1 {
     padding: 0;
 }
 
-.albums > ul > li {
+.albums > ul.entries > li {
     padding: 10px;
     border-bottom: 1px solid black;
     cursor: pointer;
     transition: all 200ms ease-in;
 }
 
-.albums > ul > li:hover {
+.albums > ul.entries > li:hover {
     background-color: aquamarine;
+}
+
+.albums > ul.pages {
+
+}
+
+.albums > ul.pages > li {
+    display: inline;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 0px 5px;
 }
 
 .results {

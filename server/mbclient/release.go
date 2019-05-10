@@ -24,22 +24,22 @@ type mediumList struct {
 
 type medium struct {
 	XMLName   xml.Name  `xml:"medium" json:"-"`
-	Position  int       `xml:"position"`
+	Position  string    `xml:"position"`
 	Format    string    `xml:"format"`
 	TrackList trackList `xml:"track-list"`
 }
 
 type trackList struct {
 	XMLName xml.Name `xml:"track-list" json:"-"`
-	Count   int      `xml:"count,attr"`
+	Count   string   `xml:"count,attr"`
 	Tracks  []track  `xml:"track"`
 }
 
 type track struct {
 	XMLName   xml.Name  `xml:"track" json:"-"`
 	ID        string    `xml:"id,attr"`
-	Position  int       `xml:"position"`
-	Number    int       `xml:"number"`
+	Position  string    `xml:"position"`
+	Number    string    `xml:"number"`
 	Recording recording `xml:"recording"`
 }
 

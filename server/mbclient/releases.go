@@ -1,6 +1,8 @@
 package mbclient
 
-import "encoding/xml"
+import (
+	"encoding/xml"
+)
 
 const ReleaseEntity = "release"
 
@@ -34,15 +36,15 @@ type nameCredit struct {
 	Artist  artist   `xml:"artist" json:"artist"`
 }
 
-func (c *MBClient) GetReleasesByArtist(id string, typeFilters []string) (*ReleasesMetadata, error) {
+func (c *MBClient) GetReleasesByArtist(id string, typeFilters []string, offset string) (*ReleasesMetadata, error) {
 	finalQuery := c.createReleasesQuery(id, "", typeFilters)
-	metadata, err := c.executeReleasesQuery(finalQuery)
+	metadata, err := c.executeReleasesQuery(finalQuery, offset)
 	return metadata, err
 }
 
-func (c *MBClient) GetReleasesByArtistAndTitle(id, title string, typeFilters []string) (*ReleasesMetadata, error) {
+func (c *MBClient) GetReleasesByArtistAndTitle(id, title string, typeFilters []string, offset string) (*ReleasesMetadata, error) {
 	finalQuery := c.createReleasesQuery(id, title, typeFilters)
-	metadata, err := c.executeReleasesQuery(finalQuery)
+	metadata, err := c.executeReleasesQuery(finalQuery, offset)
 	return metadata, err
 }
 
@@ -61,9 +63,10 @@ func (c *MBClient) createReleasesQuery(id, title string, typeFilters []string) s
 	return finalQuery
 }
 
-func (c *MBClient) executeReleasesQuery(query string) (*ReleasesMetadata, error) {
+func (c *MBClient) executeReleasesQuery(query string, offset string) (*ReleasesMetadata, error) {
 	q := c.CreateQuery()
 	q.Set("query", query)
+	q.Set("offset", string(offset))
 	metadata := &ReleasesMetadata{}
 	req, err := c.NewRequest(ReleaseEntity, q)
 	if err != nil {

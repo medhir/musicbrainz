@@ -21,14 +21,34 @@ class Search extends Component {
         axios.post('/api/search', {
             artist: this.state.artist, 
             title: this.state.title, 
-            filters: this.getFiltersArray()
+            filters: this.getFiltersArray(), 
+            offset: "0"
         }).then(response => {
             this.setState({
+                totalCount: parseInt(response.data.ReleaseList.count),
                 albums: response.data.ReleaseList.releases
             })
         })
     }
 
+    setPage (e) {
+        const pageNumber = parseInt(e.target.getAttribute('data-page'))
+        this.setState({
+            albums: null
+        }, () => {
+            axios.post('/api/search', {
+                artist: this.state.artist, 
+                title: this.state.title, 
+                filters: this.getFiltersArray(), 
+                offset: (pageNumber*25).toString()
+            }).then(response => {
+                this.setState({
+                    albums: response.data.ReleaseList.releases
+                })
+            })
+        })
+    }
+ 
     getFiltersArray () {
         const keys = Object.keys(this.state.filters)
         const filters = []
@@ -82,7 +102,7 @@ class Search extends Component {
             album: null
         }, () => {
             const releaseId = e.target.getAttribute('data-release-id')
-            axios.get(`/api/album/${ releaseId }`)
+            axios.get(`http://localhost:8080/api/album/${ releaseId }`)
             .then(response => {
                 this.setState({
                     album: response.data
@@ -118,7 +138,12 @@ class Search extends Component {
                     <button onClick={ this.doSearch.bind(this) }>Search</button>
                 </section>
                 <div className="results">
-                    { this.state.albums && <Albums albums={ this.state.albums } onClick={ this.showAlbumInfo.bind(this) }/> }
+                    { 
+                        this.state.albums && <Albums 
+                                                albums={ this.state.albums } 
+                                                total={ this.state.totalCount } 
+                                                setPage={ this.setPage.bind(this) } 
+                                                onClick={ this.showAlbumInfo.bind(this) }/> }
                     { this.state.album && <Album album={ this.state.album }/>}
                 </div>
             </Fragment>
